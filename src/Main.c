@@ -1,31 +1,26 @@
 #include "/home/codeleaded/System/Static/Library/Image.h"
 
 int main() {
-    int width = 256, height = 256;
-    int *buffer = (int *)malloc(width * height * sizeof(int));
+    const int width = 256;
+    const int height = 256;
+    unsigned int* buffer = (int* )malloc(width * height * sizeof(unsigned int));
 
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (int y = 0;y < height;y++) {
+        for (int x = 0;x < width;x++) {
             buffer[y * width + x] = 0xFFFF0000;
         }
     }
 
-    if (save_png("output.png", buffer, width, height) == 0) {
-        printf("PNG gespeichert: output.png\n");
-    } else {
-        printf("Fehler beim Speichern von PNG\n");
-    }
-    free(buffer);
+    Image_Save("./data/input.png",buffer,width,height);
+    if(buffer) free(buffer);
+    buffer = NULL;
 
 
-    int new_width, new_height;
-    int *loaded_buffer = load_png("output.png", &new_width, &new_height);
-    if (loaded_buffer) {
-        printf("PNG geladen: %dx%d Pixel\n", new_width, new_height);
-        free(loaded_buffer);
-    } else {
-        printf("Fehler beim Laden von PNG\n");
-    }
-
+    int lwidth;
+    int lheight;
+    unsigned int* bufferin = Image_Load("./data/input.png",&lwidth,&lheight);
+    if(bufferin) free(bufferin);
+    bufferin = NULL;
+    
     return 0;
 }
